@@ -11,10 +11,30 @@
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <link rel="stylesheet" href="Homepage02.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/common.css">
+    <style>
+        /* Small inline nav styles for offline/mobile use */
+        .global-nav{position:fixed;top:0;left:0;right:0;height:52px;background:#022042;color:#e6f0ff;display:flex;align-items:center;z-index:40}
+        .global-nav .nav-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;gap:8px;padding:10px}
+        .global-nav .brand{font-weight:700}
+        .nav-buttons{margin-left:auto;display:flex;gap:6px}
+        .nav-button{background:rgba(255,255,255,0.06);color:inherit;padding:6px 10px;border-radius:8px;text-decoration:none;font-weight:600;font-size:13px}
+        body.has-global-nav{padding-top:56px}
+        @media (max-width:420px){.nav-button{padding:6px 8px;font-size:12px}}
+    </style>
 </head>
 
 <body>
+    <div class="global-nav">
+        <div class="nav-inner">
+            <div class="brand">A/L 2026 Portal</div>
+            <div class="nav-buttons">
+                <a class="nav-button" href="Homepage01.html">Home</a>
+                <a class="nav-button" href="Homepage02.html">Master</a>
+                <a class="nav-button" href="Schedule.html">Schedule</a>
+            </div>
+        </div>
+    </div>
+    <script>document.body.classList.add('has-global-nav')</script>
     <div id="root"></div>
 
     <script type="text/babel">
@@ -474,14 +494,10 @@
         const root = ReactDOM.createRoot(document.getElementById('root'));
         root.render(<App />);
     </script>
-    <nav>
-  <a href="index.html">Home</a>
-  <a href="tracker.html">Tracker</a>
-  <a href="schedule.html">Schedule</a>
-</nav>
-        <script src="js/common.js"></script>
+        <!-- removed external nav/script to keep this page fully offline-capable -->
 </body>
 
 
 </html>
+
 
