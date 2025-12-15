@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GCE A/L 2026 Turbo Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background: linear-gradient(135deg, #f6f8fc 0%, #e9eff5 100%);
+            min-height: 100vh;
+        }
+        .glass {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+        .glass-strong {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+        }
+        .glass-red {
+            background: rgba(254, 242, 242, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(254, 202, 202, 0.5);
+        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+        /* Navy theme for Countdown */
+        .navy-strong { background: linear-gradient(90deg,#021124 0%, #0b2740 50%, #022042 100%); color:#e6f0ff; border:1px solid rgba(255,255,255,0.06); box-shadow:0 8px 30px rgba(2,17,36,0.45); }
+        .navy-panel { background: rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); }
+        @keyframes glow-blue { 0%{box-shadow:0 0 0 rgba(99,102,241,0)} 50%{box-shadow:0 0 18px rgba(99,102,241,0.12)} 100%{box-shadow:0 0 0 rgba(99,102,241,0)} }
+        .glow-blue { animation: glow-blue 2s infinite ease-in-out }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/common.css">
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useMemo } = React;
+
+        // --- Icons ---
+        const Icons = {
+            Trophy: () => <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>,
+            Fire: () => <svg className="w-6 h-6 text-orange-500" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.248c-1.844 0-3.18 1.608-3.18 3.18 0 3.376-4.246 4.683-4.246 9.298C4.574 19.196 8.104 22 12 22s7.426-2.804 7.426-7.274c0-4.615-4.246-5.922-4.246-9.298 0-1.572-1.336-3.18-3.18-3.18zm-1.06 8.482c0-.884.716-1.6 1.6-1.6.884 0 1.6.716 1.6 1.6v2.122c0 .884-.716 1.6-1.6 1.6-.884 0-1.6-.716-1.6-1.6V10.73z"/></svg>,
+            Calendar: () => <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>,
+            Zap: () => <svg className="w-5 h-5 text-yellow-500" fill="currentColor" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" /></svg>
+        };
+
+        // --- Components ---
+
+        // 1. Weekly Target Generator
+        const WeeklyTargetGenerator = () => {
+            // Updated Start Date: First Monday of Jan 2026 (Jan 5th)
+            const startDate = new Date('2026-01-05'); 
+            const totalYears = 26; // 2000-2025
+            const pace = 2; // Years per week
+            
+            const weeks = [];
+            for(let i=0; i<Math.ceil(totalYears/pace); i++) {
+                const currentWeekStart = new Date(startDate);
+                currentWeekStart.setDate(startDate.getDate() + (i * 7));
+                const endWeekDate = new Date(currentWeekStart);
+                endWeekDate.setDate(currentWeekStart.getDate() + 6);
+                
+                const year1 = 2000 + (i * 2);
+                const year2 = year1 + 1;
+                
+                weeks.push({
+                    weekNum: i + 1,
+                    dateRange: `${currentWeekStart.toLocaleDateString('en-US', {month:'short', day:'numeric'})} - ${endWeekDate.toLocaleDateString('en-US', {month:'short', day:'numeric'})}`,
+                    targetYears: year2 <= 2025 ? `${year1} & ${year2}` : `${year1}`,
+                    isCurrent: new Date() >= currentWeekStart && new Date() <= endWeekDate
+                });
+            }
+
+            return (
+                <div className="bg-white rounded-2xl shadow-xl p-6 mb-8 border-l-4 border-orange-500">
+                    <h2 className="text-2xl font-bold text-gray-800 flex items-center gap-2 mb-4">
+                        <Icons.Fire />
+                        Weekly Target Generator (Start: Jan 2026)
+                    </h2>
+                    <div className="overflow-x-auto">
+                        <table className="w-full text-sm">
+                            <thead className="bg-orange-50 text-orange-800 uppercase text-xs font-bold">
+                                <tr>
+                                    <th className="px-4 py-3 text-left rounded-l-lg">Week</th>
+                                    <th className="px-4 py-3 text-left">Date Range</th>
+                                    <th className="px-4 py-3 text-left rounded-r-lg">Target Years (2/Week)</th>
+                                </tr>
+                            </thead>
+                            <tbody className="divide-y divide-orange-100">
+                                {weeks.map((week) => (
+                                    <tr key={week.weekNum} className={week.isCurrent ? "bg-orange-50 font-bold ring-2 ring-orange-200" : "hover:bg-gray-50"}>
+                                        <td className="px-4 py-3 text-orange-600">Week {week.weekNum}</td>
+                                        <td className="px-4 py-3 text-gray-600">{week.dateRange}</td>
+                                        <td className="px-4 py-3">
+                                            <span className={`inline-block px-3 py-1 rounded-full text-xs ${week.isCurrent ? "bg-orange-500 text-white" : "bg-gray-100 text-gray-600"}`}>
+                                                Years: {week.targetYears}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            );
+        };
+
+        // 2. Turbo Timetable (Updated with Specific Schedule)
+        const TurboTimetable = () => {
+            return (
+                <div className="glass-strong rounded-2xl shadow-xl p-6 mb-8 border border-gray-200">
+                    <div className="flex items-center gap-3 mb-6">
+                        <div className="p-2 bg-red-100 text-red-600 rounded-lg">
+                            <Icons.Zap />
+                        </div>
+                        <div>
+                            <h2 className="text-2xl font-bold text-gray-800">Operational Plan</h2>
+                            <p className="text-sm text-gray-500">6 Papers/Week | 10h Graphic Design | Fixed KSCA Work</p>
+                        </div>
+                    </div>
+
+                    <div className="grid lg:grid-cols-7 gap-4">
+                        {/* MONDAY */}
+                        <div className="bg-cyan-50 rounded-xl p-3 border border-cyan-100">
+                            <div className="text-cyan-800 font-black uppercase text-xs mb-2">Monday</div>
+                            <div className="space-y-2">
+                                <div className="bg-white p-2 rounded shadow-sm border-l-4 border-cyan-500">
+                                    <div className="text-[10px] text-gray-400 font-bold">07:00 - 13:30</div>
+                                    <div className="font-bold text-cyan-700 text-sm">Chem 1</div>
+                                    <div className="text-[10px] text-gray-500">Revision</div>
+                                </div>
+                                <div className="bg-white p-2 rounded shadow-sm border-l-4 border-red-500">
+                                    <div className="text-[10px] text-gray-400 font-bold">14:30 - 17:30</div>
+                                    <div className="font-bold text-red-700 text-sm">Chem Paper 2</div>
+                                    <div className="text-[10px] text-gray-500">Full Paper (3h)</div>
+                                </div>
+                                <div className="bg-white p-2 rounded shadow-sm border-l-4 border-emerald-500">
+                                    <div className="text-[10px] text-gray-400 font-bold">19:00 - 22:00</div>
+                                    <div className="font-bold text-emerald-700 text-sm">Graphic Design</div>
+                                    <div className="text-[10px] text-gray-500">3 Hours</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* TUESDAY */}
+                        <div className="bg-orange-50 rounded-xl p-3 border border-orange-100">
+                            <div className="text-orange-800 font-black uppercase text-xs mb-2">Tuesday</div>
+                            <div className="h-full bg-white p-2 rounded shadow-sm border-l-4 border-orange-500 flex flex-col justify-center items-center text-center">
+                                <div className="text-[10px] text-gray-400 font-bold">FULL DAY</div>
+                                <div className="font-bold text-orange-700 text-sm mt-1">KSCA WORK</div>
+                                <div className="text-[10px] text-gray-500 mt-1">Job/Profession</div>
+                            </div>
+                        </div>
+
+                        {/* WEDNESDAY */}
+                        <div className="bg-orange-50 rounded-xl p-3 border border-orange-100">
+                            <div className="text-orange-800 font-black uppercase text-xs mb-2">Wednesday</div>
+                            <div className="space-y-2">
+                                <div className="bg-white p-2 rounded shadow-sm border-l-4 border-orange-500">
+                                    <div className="text-[10px] text-gray-400 font-bold">07:00 - 17:00</div>
+                                    <div className="font-bold text-orange-700 text-sm">KSCA WORK</div>
+                                    <div className="text-[10px] text-gray-500">Fixed</div>
+                                </div>
+                                <div className="bg-white p-2 rounded shadow-sm border-l-4 border-cyan-500">
+                                    <div className="text-[10px] text-gray-400 font-bold">19:00 - 23:30</div>
+                                    <div className="font-bold text-cyan-700 text-sm">Chem 2</div>
+                                    <div className="text-[10px] text-gray-500">Revision</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* THURSDAY */}
+                        <div className="bg-purple-50 rounded-xl p-3 border border-purple-100">
+                            <div className="text-purple-800 font-black uppercase text-xs mb-2">Thursday</div>
+                            <div className="space-y-2">
+                                <div className="bg-white p-2 rounded shadow-sm border-l-4 border-purple-500">
+                                    <div className="text-[10px] text-gray-400 font-bold">07:00 - 13:00</div>
+                                    <div className="font-bold text-purple-700 text-sm">Phys 1</div>
+                                    <div className="text-[10px] text-gray-500">Revision</div>
+                                </div>
+                                <div className="bg-white p-2 rounded shadow-sm border-l-4 border-red-500">
+                                    <div className="text-[10px] text-gray-400 font-bold">13:30 - 16:30</div>
+                                    <div className="font-bold text-red-700 text-sm">Phys Paper 1</div>
+                                </div>
+                                <div className="bg-white p-2 rounded shadow-sm border-l-4 border-blue-500">
+                                    <div className="text-[10px] text-gray-400 font-bold">16:30 - 19:30</div>
+                                    <div className="font-bold text-blue-700 text-sm">Maths</div>
+                                    <div className="text-[10px] text-gray-500">Session</div>
+                                </div>
+                                <div className="bg-white p-2 rounded shadow-sm border-l-4 border-emerald-500">
+                                    <div className="text-[10px] text-gray-400 font-bold">20:30 - 22:30</div>
+                                    <div className="font-bold text-emerald-700 text-sm">Design (2h)</div>
+                                </div>
+                            </div>
+                        </div>
+
+                         {/* FRIDAY */}
+                        <div className="bg-blue-50 rounded-xl p-3 border border-blue-100">
+                            <div className="text-blue-900 font-black uppercase text-xs mb-2">Friday</div>
+                            <div className="space-y-2">
+                                <div className="bg-white p-2 rounded shadow-sm border-l-4 border-red-500">
+                                    <div className="text-[10px] text-gray-400 font-bold">08:00 - 11:00</div>
+                                    <div className="font-bold text-red-700 text-sm">Math Paper 1</div>
+                                    <div className="text-[10px] text-gray-500">Full Paper</div>
+                                </div>
+                                <div className="bg-white p-2 rounded shadow-sm border-l-4 border-emerald-500">
+                                    <div className="text-[10px] text-gray-400 font-bold">13:00 - 16:00</div>
+                                    <div className="font-bold text-emerald-700 text-sm">Design (3h)</div>
+                                </div>
+                                <div className="bg-white p-2 rounded shadow-sm border-l-4 border-blue-500">
+                                    <div className="text-[10px] text-gray-400 font-bold">18:30 - 21:30</div>
+                                    <div className="font-bold text-blue-700 text-sm">Maths</div>
+                                    <div className="text-[10px] text-gray-500">Session</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* SATURDAY */}
+                        <div className="bg-cyan-100 rounded-xl p-3 border border-cyan-200">
+                            <div className="text-cyan-900 font-black uppercase text-xs mb-2">Saturday</div>
+                            <div className="space-y-2">
+                                <div className="bg-white p-2 rounded shadow-sm border-l-4 border-red-500">
+                                    <div className="text-[10px] text-gray-400 font-bold">08:00 - 10:00</div>
+                                    <div className="font-bold text-red-700 text-sm">Chem Paper 1</div>
+                                    <div className="text-[10px] text-gray-500">2h (Fixed)</div>
+                                </div>
+                                <div className="bg-white p-2 rounded shadow-sm border-l-4 border-cyan-500">
+                                    <div className="text-[10px] text-gray-400 font-bold">10:00 - 12:30</div>
+                                    <div className="font-bold text-cyan-700 text-sm">Chem Disc</div>
+                                </div>
+                                <div className="bg-white p-2 rounded shadow-sm border-l-4 border-emerald-500">
+                                    <div className="text-[10px] text-gray-400 font-bold">14:00 - 16:00</div>
+                                    <div className="font-bold text-emerald-700 text-sm">Design (2h)</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* SUNDAY */}
+                        <div className="bg-purple-100 rounded-xl p-3 border border-purple-200">
+                            <div className="text-purple-900 font-black uppercase text-xs mb-2">Sunday</div>
+                             <div className="space-y-2">
+                                <div className="bg-white p-2 rounded shadow-sm border-l-4 border-red-500">
+                                    <div className="text-[10px] text-gray-400 font-bold">09:00 - 12:00</div>
+                                    <div className="font-bold text-red-700 text-sm">Math Paper 2</div>
+                                </div>
+                                <div className="bg-white p-2 rounded shadow-sm border-l-4 border-red-500">
+                                    <div className="text-[10px] text-gray-400 font-bold">13:30 - 16:30</div>
+                                    <div className="font-bold text-red-700 text-sm">Phys Paper 2</div>
+                                </div>
+                                <div className="bg-white p-2 rounded shadow-sm border-l-4 border-purple-500">
+                                    <div className="text-[10px] text-gray-400 font-bold">19:30 - 23:00</div>
+                                    <div className="font-bold text-purple-700 text-sm">Phys 2 (Rev)</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="mt-4 text-center text-xs text-gray-500 bg-white/50 p-2 rounded">
+                        <strong>Sleep Protocol:</strong> Mon-Fri: 12am-5am | Sat-Sun: 2am-7am.
+                    </div>
+                </div>
+            );
+        };
+
+        // 3. Simplified Tracker (For brevity in this view)
+        const ProgressTracker = ({ progress, setProgress, years, subjects }) => {
+            const toggleStatus = (year, subject) => {
+                setProgress(prev => ({
+                    ...prev,
+                    [year]: {
+                        ...prev[year],
+                        [subject]: !prev[year][subject]
+                    }
+                }));
+            };
+
+            return (
+                <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-6">
+                    <h2 className="text-xl font-bold text-gray-800 mb-4">Paper Log</h2>
+                    <div className="overflow-x-auto no-scrollbar">
+                        <div className="min-w-[600px]">
+                             <div className="grid grid-cols-4 bg-gray-50 p-2 font-bold text-xs uppercase text-gray-500 rounded-t-lg">
+                                <div>Year</div>
+                                {subjects.map(s => <div key={s.id} className={`text-center ${s.color}`}>{s.name}</div>)}
+                            </div>
+                            <div className="max-h-[300px] overflow-y-auto no-scrollbar">
+                                {years.map(year => (
+                                    <div key={year} className="grid grid-cols-4 border-b py-2 hover:bg-gray-50 items-center text-sm">
+                                        <div className="font-bold text-gray-600 pl-2">{year}</div>
+                                        {subjects.map(sub => (
+                                            <div key={sub.id} className="flex justify-center">
+                                                <button 
+                                                    onClick={() => toggleStatus(year, sub.id)}
+                                                    className={`w-full mx-2 py-1 rounded text-xs font-bold transition-all ${
+                                                        progress[year]?.[sub.id] 
+                                                        ? 'bg-green-500 text-white shadow-sm' 
+                                                        : 'bg-gray-100 text-gray-400 hover:bg-gray-200'
+                                                    }`}
+                                                >
+                                                    {progress[year]?.[sub.id] ? 'DONE' : '-'}
+                                                </button>
+                                            </div>
+                                        ))}
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        // 4. Countdown Component (GCE A/L 2026)
+        const Countdown = ({ targetDate }) => {
+            const getTimeParts = (distanceMs) => {
+                const totalSeconds = Math.max(0, Math.floor(distanceMs / 1000));
+                const days = Math.floor(totalSeconds / (60 * 60 * 24));
+                const hours = Math.floor((totalSeconds % (60 * 60 * 24)) / (60 * 60));
+                const minutes = Math.floor((totalSeconds % (60 * 60)) / 60);
+                const seconds = Math.floor(totalSeconds % 60);
+                return { days, hours, minutes, seconds };
+            };
+
+            const [now, setNow] = useState(new Date());
+            useEffect(() => {
+                const id = setInterval(() => setNow(new Date()), 1000);
+                return () => clearInterval(id);
+            }, []);
+
+            const distance = new Date(targetDate) - now;
+            const finished = distance <= 0;
+            const ONE_DAY = 24 * 60 * 60 * 1000;
+            const urgency = (distance <= (7 * ONE_DAY) && !finished) ? 'ring-2 ring-yellow-400 glow-blue' : '';
+            const timeParts = getTimeParts(distance);
+
+            return (
+                <div className={`navy-strong mx-auto max-w-3xl text-center rounded-2xl p-6 mt-8 mb-6 text-white ${urgency} flex flex-col items-center justify-center`}>
+                    <div className="flex flex-col items-center justify-center mb-4">
+                        <div>
+                            <h3 className="font-black text-2xl text-white flex items-center gap-3"><span className="bg-white/10 rounded-full p-1"><Icons.Calendar /></span>GCE A/L 2026 Countdown</h3>
+                            <p className="text-xs text-blue-200 mt-1">Official exam: <strong className="font-semibold">{new Date(targetDate).toLocaleDateString()}</strong></p>
+                        </div>
+                        <div className="text-center mt-2">
+                            <p className="text-xs text-blue-200">Time until exam</p>
+                            <p className="text-sm font-bold text-white">{new Date(targetDate).toLocaleString()}</p>
+                        </div>
+                    </div>
+
+                    <div className="flex gap-4 items-center justify-center flex-wrap">
+                        {finished ? (
+                            <div className="text-center text-green-400 font-bold">Exam date reached!</div>
+                        ) : (
+                            <>
+                                <div className="text-center p-3 navy-panel rounded-xl border border-transparent w-20">
+                                    <div className="text-2xl font-extrabold text-white">{timeParts.days}</div>
+                                    <div className="text-[10px] uppercase text-blue-200 tracking-wider">Days</div>
+                                </div>
+                                <div className="text-center p-3 navy-panel rounded-xl border border-transparent w-20">
+                                    <div className="text-2xl font-extrabold text-white">{timeParts.hours}</div>
+                                    <div className="text-[10px] uppercase text-blue-200 tracking-wider">Hours</div>
+                                </div>
+                                <div className="text-center p-3 navy-panel rounded-xl border border-transparent w-20">
+                                    <div className="text-2xl font-extrabold text-white">{timeParts.minutes}</div>
+                                    <div className="text-[10px] uppercase text-blue-200 tracking-wider">Minutes</div>
+                                </div>
+                                <div className="text-center p-3 navy-panel rounded-xl border border-transparent w-20">
+                                    <div className="text-2xl font-extrabold text-white">{timeParts.seconds}</div>
+                                    <div className="text-[10px] uppercase text-blue-200 tracking-wider">Seconds</div>
+                                </div>
+                            </>
+                        )}
+                    </div>
+
+                    <div className="mt-4 text-xs text-blue-100">Starts counting from: <span className="font-mono">{now.toLocaleString()}</span></div>
+                </div>
+            );
+        };
+
+        const App = () => {
+            const startYear = 2000;
+            const endYear = 2025;
+            const years = Array.from({ length: endYear - startYear + 1 }, (_, i) => startYear + i).reverse();
+            const subjects = [
+                { id: 'maths', name: 'Maths', color: 'text-blue-600' },
+                { id: 'physics', name: 'Physics', color: 'text-purple-600' },
+                { id: 'chem', name: 'Chem', color: 'text-teal-600' }
+            ];
+
+            // Shared storage key so both Quick Log (this file) and Detailed Log (Homepage02.html)
+            // can read and write the same progress state. Quick Log keeps a simplified boolean
+            // view while Detailed Log uses per-round fields.
+            const SHARED_KEY = 'al2026_shared_progress_v1';
+
+            const [progress, setProgress] = useState(() => {
+                // Prefer shared detailed state if available and map to simplified booleans
+                const savedShared = localStorage.getItem(SHARED_KEY);
+                if (savedShared) {
+                    const detailed = JSON.parse(savedShared);
+                    const simple = {};
+                    years.forEach(y => {
+                        const d = detailed[y] || {};
+                        simple[y] = {
+                            maths: !!(d.maths?.r1Done || d.maths?.r2Done),
+                            physics: !!(d.physics?.r1Done || d.physics?.r2Done),
+                            chem: !!(d.chem?.r1Done || d.chem?.r2Done)
+                        };
+                    });
+                    return simple;
+                }
+
+                // Fallback to older simple key for backwards compatibility
+                const saved = localStorage.getItem('al2026_turbo_progress');
+                if (saved) return JSON.parse(saved);
+
+                const initial = {};
+                years.forEach(y => { initial[y] = { maths: false, physics: false, chem: false }; });
+                return initial;
+            });
+
+            // When progress changes here, update both the legacy simple key and the shared detailed key.
+            useEffect(() => {
+                localStorage.setItem('al2026_turbo_progress', JSON.stringify(progress));
+
+                // Merge into/shared detailed structure
+                const saved = localStorage.getItem(SHARED_KEY);
+                const detailed = saved ? JSON.parse(saved) : {};
+
+                years.forEach(y => {
+                    if (!detailed[y]) detailed[y] = {
+                        maths: { r1Done: false, mark1: '', r2Done: false, mark2: '' },
+                        physics: { r1Done: false, mark1: '', r2Done: false, mark2: '' },
+                        chem: { r1Done: false, mark1: '', r2Done: false, mark2: '' }
+                    };
+
+                    ['maths','physics','chem'].forEach(s => {
+                        // set both rounds to the simplified boolean so Detailed Log reflects QUICK toggles
+                        detailed[y][s].r1Done = !!progress[y][s];
+                        detailed[y][s].r2Done = !!progress[y][s];
+                    });
+                });
+
+                localStorage.setItem(SHARED_KEY, JSON.stringify(detailed));
+            }, [progress]);
+
+            return (
+                <div className="min-h-screen pb-12 bg-gradient-to-br from-orange-50 to-slate-100">
+                    {/* Header */}
+                    <div className="bg-slate-900 text-white pt-12 pb-24 px-6 relative">
+                         <div className="max-w-6xl mx-auto relative z-10 flex justify-between items-end">
+                            <div>
+                                <h1 className="text-4xl font-black mb-2 flex items-center gap-3">
+                                    <Icons.Zap />
+                                    TURBO MODE 2026
+                                </h1>
+                                <p className="text-slate-400 text-lg">Pace: 2 Years / Week. Finish Date: April 2026.</p>
+                            </div>
+                            <div className="text-right hidden md:block">
+                                <div className="bg-orange-600 text-white text-xs font-bold px-3 py-1 rounded-full animate-pulse">
+                                    HIGH INTENSITY
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Content */}
+                    <div className="max-w-6xl mx-auto px-4 -mt-16 relative z-10">
+                        {/* Countdown Section (GCE A/L 2026) - Top of page */}
+                        <Countdown targetDate={'2026-08-10T00:00:00'} />
+                        <WeeklyTargetGenerator />
+                        <TurboTimetable />
+                        <ProgressTracker progress={progress} setProgress={setProgress} years={years} subjects={subjects} />
+                        <div className="text-center text-gray-400 text-xs mt-8 pb-8">
+                            <p>Remember: This schedule is intense. Prioritize completing papers over perfection.</p>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+    <script src="js/common.js"></script>
+</body>
+</html>

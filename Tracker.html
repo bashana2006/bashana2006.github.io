@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GCE A/L 2026 Master Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <link rel="stylesheet" href="Homepage02.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/common.css">
+</head>
+
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useMemo } = React;
+
+        // --- Icons ---
+        const Icons = {
+            Trophy: () => <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>,
+            Chart: () => <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z" /></svg>,
+            Trending: () => <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>,
+            ArrowRight: () => <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>,
+            Calendar: () => <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+        };
+
+        // --- Components ---
+
+        // 1. Line Chart Component (SVG)
+        const LineChart = ({ data, color1, color2, height = 100 }) => {
+            if (!data || data.length < 2) return <div className="h-24 flex items-center justify-center text-xs text-gray-400">Add more data to see trends</div>;
+
+            const width = 100;
+            const maxVal = 100;
+
+            const getPoints = (key) => {
+                return data.map((d, i) => {
+                    const x = (i / (data.length - 1)) * width;
+                    const y = height - ((d[key] || 0) / maxVal) * height;
+                    return `${x},${y}`;
+                }).join(' ');
+            };
+
+            return (
+                <svg viewBox={`0 0 ${width} ${height}`} className="w-full h-32 overflow-visible preserve-3d">
+                    {/* Grid lines */}
+                    <line x1="0" y1={height} x2={width} y2={height} stroke="#e5e7eb" strokeWidth="1" />
+                    <line x1="0" y1={height / 2} x2={width} y2={height / 2} stroke="#e5e7eb" strokeWidth="0.5" strokeDasharray="2" />
+
+                    {/* Round 1 Line */}
+                    <polyline
+                        fill="none"
+                        stroke={color1}
+                        strokeWidth="2"
+                        points={getPoints('m1')}
+                        className="drop-shadow-sm opacity-60"
+                    />
+
+                    {/* Round 2 Line */}
+                    <polyline
+                        fill="none"
+                        stroke={color2}
+                        strokeWidth="2"
+                        points={getPoints('m2')}
+                        className="drop-shadow-md"
+                    />
+                </svg>
+            );
+        };
+
+        // 2. Advanced Analytics Board
+        const AnalyticsDashboard = ({ progress, years, subjects }) => {
+            const stats = useMemo(() => {
+                const result = {};
+                subjects.forEach(sub => {
+                    let r1Total = 0, r1Count = 0;
+                    let r2Total = 0, r2Count = 0;
+                    const history = [];
+
+                    [...years].sort((a, b) => a - b).forEach(year => {
+                        const m1 = parseInt(progress[year]?.[sub.id]?.mark1 || 0);
+                        const m2 = parseInt(progress[year]?.[sub.id]?.mark2 || 0);
+
+                        if (m1 > 0) { r1Total += m1; r1Count++; }
+                        if (m2 > 0) { r2Total += m2; r2Count++; }
+
+                        history.push({ year, m1, m2 });
+                    });
+
+                    result[sub.id] = {
+                        r1Avg: r1Count > 0 ? Math.round(r1Total / r1Count) : 0,
+                        r2Avg: r2Count > 0 ? Math.round(r2Total / r2Count) : 0,
+                        history
+                    };
+                });
+                return result;
+            }, [progress, years, subjects]);
+
+            return (
+                <div className="glass-strong rounded-2xl shadow-xl p-6 mb-8 border-t-4 border-blue-500">
+                    <div className="flex justify-between items-end mb-6">
+                        <div>
+                            <h2 className="text-3xl font-black text-gray-800 flex items-center gap-2 tracking-tight">
+                                <Icons.Trending />
+                                Performance Growth
+                            </h2>
+                            <p className="text-gray-500 text-sm mt-1">Comparing Foundation (R1) vs Mastery (R2)</p>
+                        </div>
+                        <div className="flex gap-4 text-xs font-bold">
+                            <div className="flex items-center gap-1 text-gray-400"><div className="w-3 h-1 bg-gray-400 rounded"></div> Round 1</div>
+                            <div className="flex items-center gap-1 text-indigo-600"><div className="w-3 h-1 bg-indigo-600 rounded"></div> Round 2</div>
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        {subjects.map(sub => {
+                            const s = stats[sub.id];
+                            const improvement = s.r2Avg - s.r1Avg;
+                            return (
+                                <div key={sub.id} className="relative group">
+                                    <div className={`absolute inset-0 bg-gradient-to-br ${sub.gradient} opacity-5 rounded-2xl`}></div>
+                                    <div className="relative border border-gray-200 bg-white/50 rounded-2xl p-5 hover:shadow-lg transition-all duration-300">
+                                        <div className="flex justify-between items-start mb-4">
+                                            <h3 className={`font-bold text-lg ${sub.color}`}>{sub.name}</h3>
+                                            <div className="text-right">
+                                                <div className="text-2xl font-black text-gray-800">{s.r2Avg || s.r1Avg}</div>
+                                                {improvement > 0 && (
+                                                    <div className="text-[10px] font-bold text-green-500 bg-green-50 px-1.5 py-0.5 rounded-full inline-block">
+                                                        +{improvement} Gain
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
+                                        <LineChart
+                                            data={s.history}
+                                            color1="#9ca3af" // Gray for R1
+                                            color2={sub.lineColor} // Theme color for R2
+                                        />
+                                        <div className="mt-2 flex justify-between text-[10px] text-gray-400 font-mono uppercase tracking-wider">
+                                            <span>2000</span>
+                                            <span>2025</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
+                </div>
+            );
+        };
+
+        // 3. Tracker Component
+        const Tracker = ({ progress, setProgress, years, subjects }) => {
+
+            const toggleStatus = (year, subject, roundKey) => {
+                setProgress(prev => ({
+                    ...prev,
+                    [year]: {
+                        ...prev[year],
+                        [subject]: {
+                            ...prev[year][subject],
+                            [roundKey]: !prev[year][subject][roundKey]
+                        }
+                    }
+                }));
+            };
+
+            const updateMark = (year, subject, roundKey, value) => {
+                let num = parseInt(value);
+                if (isNaN(num)) num = '';
+                if (num > 100) num = 100;
+                if (num < 0) num = 0;
+
+                setProgress(prev => ({
+                    ...prev,
+                    [year]: {
+                        ...prev[year],
+                        [subject]: {
+                            ...prev[year][subject],
+                            [roundKey]: num
+                        }
+                    }
+                }));
+            };
+
+            const calculateTotalProgress = () => {
+                let totalTasks = years.length * 3 * 2;
+                let completed = 0;
+                years.forEach(y => {
+                    subjects.forEach(s => {
+                        if (progress[y] && progress[y][s.id]?.r1Done) completed++;
+                        if (progress[y] && progress[y][s.id]?.r2Done) completed++;
+                    });
+                });
+                return Math.round((completed / totalTasks) * 100);
+            };
+
+            return (
+                <div className="glass-strong rounded-2xl shadow-xl border border-gray-200 overflow-hidden mb-8">
+                    <div className="p-6 border-b border-gray-100 bg-white/50">
+                        <div className="flex justify-between items-center mb-4">
+                            <div>
+                                <h2 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
+                                    <Icons.Trophy />
+                                    Detailed Log
+                                </h2>
+                            </div>
+                            <div className="text-right">
+                                <span className="text-4xl font-black bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
+                                    {calculateTotalProgress()}%
+                                </span>
+                            </div>
+                        </div>
+                        {/* Custom Progress Bar */}
+                        <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
+                            <div className="h-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 transition-all duration-1000" style={{ width: `${calculateTotalProgress()}%` }}></div>
+                        </div>
+                    </div>
+
+                    <div className="overflow-x-auto no-scrollbar">
+                        <div className="min-w-[900px]">
+                            {/* Header */}
+                            <div className="grid grid-cols-10 bg-gray-50/80 backdrop-blur p-4 font-bold text-xs uppercase tracking-wider text-gray-500 border-b sticky top-0 z-20">
+                                <div className="col-span-1 text-center pt-1">Year</div>
+                                {subjects.map(sub => (
+                                    <div key={sub.id} className={`col-span-3 text-center ${sub.color}`}>
+                                        {sub.name}
+                                    </div>
+                                ))}
+                            </div>
+
+                            {/* Rows */}
+                            <div className="max-h-[600px] overflow-y-auto no-scrollbar">
+                                {years.map(year => (
+                                    <div key={year} className="grid grid-cols-10 border-b border-gray-100 hover:bg-white/80 transition-colors py-3 items-center group">
+                                        <div className="col-span-1 text-center font-bold text-gray-700 text-sm opacity-60 group-hover:opacity-100 transition-opacity">
+                                            {year}
+                                        </div>
+                                        {subjects.map(sub => {
+                                            const p = progress[year]?.[sub.id] || {};
+                                            const m1 = parseInt(p.mark1 || 0);
+                                            const m2 = parseInt(p.mark2 || 0);
+                                            const gain = m2 > m1 && m1 > 0 ? m2 - m1 : null;
+
+                                            return (
+                                                <div key={sub.id} className="col-span-3 px-2 border-l border-gray-100 flex items-center gap-3 justify-center relative">
+
+                                                    {/* Round 1 Group */}
+                                                    <div className="flex flex-col items-center gap-1">
+                                                        <span className="text-[8px] font-bold text-gray-400 uppercase tracking-wider">R1</span>
+                                                        <div className="flex items-center bg-gray-50 rounded-lg p-1 border border-gray-200 group-hover:border-gray-300 transition-colors">
+                                                            <button
+                                                                onClick={() => toggleStatus(year, sub.id, 'r1Done')}
+                                                                className={`w-5 h-5 rounded flex items-center justify-center transition-all ${p.r1Done ? 'bg-blue-500 text-white shadow-sm' : 'bg-gray-200 hover:bg-gray-300'
+                                                                    }`}
+                                                            >
+                                                                {p.r1Done && <Icons.ArrowRight />}
+                                                            </button>
+                                                            <input
+                                                                type="number"
+                                                                placeholder="-"
+                                                                value={p.mark1 || ''}
+                                                                onChange={(e) => updateMark(year, sub.id, 'mark1', e.target.value)}
+                                                                className="w-10 bg-transparent text-center text-sm font-medium text-gray-600 focus:outline-none focus:text-blue-600"
+                                                            />
+                                                        </div>
+                                                    </div>
+
+                                                    {/* Visual Divider / Gain Indicator */}
+                                                    <div className="flex flex-col items-center justify-center w-8">
+                                                        {gain ? (
+                                                            <span className="text-[10px] font-bold text-green-500 bg-green-50 px-1 rounded">+{gain}</span>
+                                                        ) : (
+                                                            <div className="w-4 h-[1px] bg-gray-300"></div>
+                                                        )}
+                                                    </div>
+
+                                                    {/* Round 2 Group */}
+                                                    <div className="flex flex-col items-center gap-1">
+                                                        <span className="text-[8px] font-bold text-indigo-400 uppercase tracking-wider">R2</span>
+                                                        <div className="flex items-center bg-indigo-50/50 rounded-lg p-1 border border-indigo-100 group-hover:border-indigo-200 transition-colors">
+                                                            <input
+                                                                type="number"
+                                                                placeholder="-"
+                                                                value={p.mark2 || ''}
+                                                                onChange={(e) => updateMark(year, sub.id, 'mark2', e.target.value)}
+                                                                className="w-10 bg-transparent text-center text-sm font-bold text-indigo-700 focus:outline-none"
+                                                            />
+                                                            <button
+                                                                onClick={() => toggleStatus(year, sub.id, 'r2Done')}
+                                                                className={`w-5 h-5 rounded flex items-center justify-center transition-all ${p.r2Done ? 'bg-indigo-500 text-white shadow-sm' : 'bg-gray-200 hover:bg-gray-300'
+                                                                    }`}
+                                                            >
+                                                                {p.r2Done && <Icons.ArrowRight />}
+                                                            </button>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        // 4. Countdown Component (GCE A/L 2026)
+        const Countdown = ({ targetDate }) => {
+            const getTimeParts = (distanceMs) => {
+                const totalSeconds = Math.max(0, Math.floor(distanceMs / 1000));
+                const days = Math.floor(totalSeconds / (60 * 60 * 24));
+                const hours = Math.floor((totalSeconds % (60 * 60 * 24)) / (60 * 60));
+                const minutes = Math.floor((totalSeconds % (60 * 60)) / 60);
+                const seconds = Math.floor(totalSeconds % 60);
+                return { days, hours, minutes, seconds };
+            };
+
+            const [now, setNow] = useState(new Date());
+            useEffect(() => {
+                const id = setInterval(() => setNow(new Date()), 1000);
+                return () => clearInterval(id);
+            }, []);
+
+            const distance = new Date(targetDate) - now;
+            const finished = distance <= 0;
+            const timeParts = getTimeParts(distance);
+            const ONE_DAY = 24 * 60 * 60 * 1000;
+            const urgency = (distance <= (7 * ONE_DAY) && !finished) ? 'ring-2 ring-yellow-400 glow-blue' : '';
+
+            return (
+                <div className={`navy-strong mx-auto max-w-3xl text-center rounded-2xl p-6 mt-8 mb-6 text-white ${urgency} flex flex-col items-center justify-center`}>
+                    <div className="flex flex-col items-center justify-center mb-4">
+                        <div>
+                            <h3 className="font-black text-2xl text-white flex items-center gap-3"><span className="bg-white/10 rounded-full p-1"><Icons.Calendar /></span>GCE A/L 2026 Countdown</h3>
+                            <p className="text-xs text-blue-200 mt-1">Official exam: <strong className="font-semibold">{new Date(targetDate).toLocaleDateString()}</strong></p>
+                        </div>
+                        <div className="text-center mt-2">
+                            <p className="text-xs text-blue-200">Time until exam</p>
+                            <p className="text-sm font-bold text-white">{new Date(targetDate).toLocaleString()}</p>
+                        </div>
+                    </div>
+
+                    <div className="flex gap-4 items-center justify-center flex-wrap">
+                        {finished ? (
+                            <div className="text-center text-green-400 font-bold">Exam date reached!</div>
+                        ) : (
+                            <>
+                                <div className="text-center p-3 navy-panel rounded-xl border border-transparent w-20">
+                                    <div className="text-2xl font-extrabold text-white">{timeParts.days}</div>
+                                    <div className="text-[10px] uppercase text-blue-200 tracking-wider">Days</div>
+                                </div>
+                                <div className="text-center p-3 navy-panel rounded-xl border border-transparent w-20">
+                                    <div className="text-2xl font-extrabold text-white">{timeParts.hours}</div>
+                                    <div className="text-[10px] uppercase text-blue-200 tracking-wider">Hours</div>
+                                </div>
+                                <div className="text-center p-3 navy-panel rounded-xl border border-transparent w-20">
+                                    <div className="text-2xl font-extrabold text-white">{timeParts.minutes}</div>
+                                    <div className="text-[10px] uppercase text-blue-200 tracking-wider">Minutes</div>
+                                </div>
+                                <div className="text-center p-3 navy-panel rounded-xl border border-transparent w-20">
+                                    <div className="text-2xl font-extrabold text-white">{timeParts.seconds}</div>
+                                    <div className="text-[10px] uppercase text-blue-200 tracking-wider">Seconds</div>
+                                </div>
+                            </>
+                        )}
+                    </div>
+
+                    <div className="mt-4 text-xs text-blue-100">Starts counting from: <span className="font-mono">{now.toLocaleString()}</span></div>
+                </div>
+            );
+        };
+
+        const App = () => {
+            const startYear = 2000;
+            const endYear = 2025;
+            const years = Array.from({ length: endYear - startYear + 1 }, (_, i) => startYear + i).reverse();
+
+            const subjects = [
+                { id: 'maths', name: 'Comb. Maths', color: 'text-blue-600', bg: 'bg-blue-50', gradient: 'from-blue-400 to-blue-100', lineColor: '#2563eb' },
+                { id: 'physics', name: 'Physics', color: 'text-purple-600', bg: 'bg-purple-50', gradient: 'from-purple-400 to-purple-100', lineColor: '#9333ea' },
+                { id: 'chem', name: 'Chemistry', color: 'text-teal-600', bg: 'bg-teal-50', gradient: 'from-teal-400 to-teal-100', lineColor: '#0d9488' }
+            ];
+
+            // Shared storage key to sync with Homepage01 quick log. Prefer shared state when present.
+            const SHARED_KEY = 'al2026_shared_progress_v1';
+
+            // Initial State (v3 for new structure)
+            const [progress, setProgress] = useState(() => {
+                const savedShared = localStorage.getItem(SHARED_KEY);
+                if (savedShared) {
+                    const detailed = JSON.parse(savedShared);
+                    // Ensure all years exist in the loaded object
+                    const initial = {};
+                    years.forEach(year => {
+                        initial[year] = detailed[year] || {
+                            maths: { r1Done: false, mark1: '', r2Done: false, mark2: '' },
+                            physics: { r1Done: false, mark1: '', r2Done: false, mark2: '' },
+                            chem: { r1Done: false, mark1: '', r2Done: false, mark2: '' }
+                        };
+                    });
+                    return initial;
+                }
+
+                const saved = localStorage.getItem('al2026_tracker_progress_v3');
+                if (saved) return JSON.parse(saved);
+
+                const initial = {};
+                years.forEach(year => {
+                    initial[year] = {
+                        maths: { r1Done: false, mark1: '', r2Done: false, mark2: '' },
+                        physics: { r1Done: false, mark1: '', r2Done: false, mark2: '' },
+                        chem: { r1Done: false, mark1: '', r2Done: false, mark2: '' }
+                    };
+                });
+                return initial;
+            });
+
+            // Persist both the tracker key and the shared key so Quick Log stays in sync.
+            useEffect(() => {
+                localStorage.setItem('al2026_tracker_progress_v3', JSON.stringify(progress));
+                localStorage.setItem(SHARED_KEY, JSON.stringify(progress));
+            }, [progress]);
+
+            return (
+                <div className="min-h-screen pb-12 bg-gradient-to-br from-slate-50 to-slate-100">
+                    {/* Creative Header */}
+                    <div className="bg-slate-900 text-white pt-16 pb-32 px-6 relative overflow-hidden">
+                        <div className="absolute top-0 right-0 w-96 h-96 bg-blue-600 rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-pulse"></div>
+                        <div className="absolute top-0 left-0 w-72 h-72 bg-purple-600 rounded-full mix-blend-multiply filter blur-3xl opacity-10"></div>
+
+                        <div className="max-w-6xl mx-auto relative z-10">
+                            <div className="flex justify-between items-end">
+                                <div>
+                                    <h1 className="text-5xl font-black mb-3 tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">
+                                        PROJECT 2026
+                                    </h1>
+                                    <p className="text-slate-400 text-xl font-light">Transforming "Fail" into "Success", one data point at a time.</p>
+                                </div>
+                                <div className="hidden md:block text-right">
+                                    <div className="text-sm font-mono text-blue-400 mb-1">Exam Countdown</div>
+                                    <div className="text-3xl font-bold text-white">August 2026</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Main Content */}
+                    <div className="max-w-6xl mx-auto px-4 -mt-20 relative z-10">
+                        {/* Countdown Section (GCE A/L 2026) - Top of page */}
+                        <Countdown targetDate={'2026-08-10T00:00:00'} />
+
+                        <AnalyticsDashboard progress={progress} years={years} subjects={subjects} />
+                        <Tracker progress={progress} setProgress={setProgress} years={years} subjects={subjects} />
+
+                        {/* Countdown removed (moved to top) */}
+
+                        <div className="text-center text-gray-400 text-xs mt-12 pb-8 font-mono">
+                            <p>Autosave Enabled • Local Storage v3.0</p>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+        <script src="js/common.js"></script>
+</body>
+
+</html>
