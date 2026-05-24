@@ -138,19 +138,24 @@ function scrollTestimonials(dir) {
 function handleFormSubmit(e) {
   e.preventDefault();
   const btn = document.getElementById('submitBtn');
-  btn.textContent = 'Sending…'; btn.disabled = true;
+  btn.textContent = 'Sending…';
+  btn.disabled = true;
 
   const form = e.target;
   const data = new FormData(form);
-  const body = `Name: ${data.get('firstName')} ${data.get('lastName')}
-Email: ${data.get('email')}
-Service: ${data.get('service')}
-Budget: ${data.get('budget')}
-Message: ${data.get('message')}`;
+  const firstName = data.get('firstName') || '';
+  const lastName = data.get('lastName') || '';
+  const email = data.get('email') || '';
+  const service = data.get('service') || 'Not specified';
+  const budget = data.get('budget') || 'Not specified';
+  const message = data.get('message') || '';
 
-  const subject = encodeURIComponent(`New Project Enquiry from ${data.get('firstName')} ${data.get('lastName')}`);
+  const body = `Name: ${firstName} ${lastName}\r\nEmail: ${email}\r\nService: ${service}\r\nBudget: ${budget}\r\nMessage: ${message}`;
+  const subject = encodeURIComponent(`New Project Enquiry from ${firstName} ${lastName}`);
   const bodyEncoded = encodeURIComponent(body);
-  window.open(`mailto:Bashana2006@gmail.com?subject=${subject}&body=${bodyEncoded}`);
+  const mailtoLink = `mailto:Bashana2006@gmail.com?subject=${subject}&body=${bodyEncoded}`;
+
+  window.location.href = mailtoLink;
 
   setTimeout(() => {
     document.getElementById('contactForm').style.display = 'none';
