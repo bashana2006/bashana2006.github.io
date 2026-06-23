@@ -1,464 +1,394 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bashana Mihindupriya | Portfolio</title>
-    
-    <!-- Google Fonts: Inter -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Tailwind CSS (CDN for quick execution) -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#215EFD',
-                        secondary: '#E1E2E5',
-                        bgcolor: '#FEFEFE',
-                        accent: '#DFE6FE',
-                        textcolor: '#000000',
-                    },
-                    borderRadius: {
-                        'premium': '20px',
-                    },
-                    boxShadow: {
-                        'soft': '0 10px 40px -10px rgba(0,0,0,0.08)',
-                        'glow': '0 0 20px rgba(33, 94, 253, 0.3)',
-                    }
-                }
-            }
-        }
-    </script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bashana Mihindupriya — Creative Designer, Developer & Digital Creator</title>
+<meta name="description" content="Bashana Mihindupriya — Creative Designer, Developer & Digital Creator. Branding, photography, web development and digital storytelling.">
 
-    <!-- Custom Typography, Glassmorphism, and Animations -->
-    <style>
-        :root {
-            --primary: #215EFD;
-            --accent: #DFE6FE;
-        }
-        
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #FEFEFE;
-            color: #000000;
-            overflow-x: hidden;
-            scroll-behavior: smooth;
-        }
+<!-- Favicon — placeholder monogram, swap with real logo PNG when available -->
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
 
-        /* Typography System */
-        h1 { font-size: 70px; font-weight: 300; line-height: 1.1; letter-spacing: -0.02em; }
-        h2 { font-size: 58px; font-weight: 400; line-height: 1.2; letter-spacing: -0.01em; }
-        h3 { font-size: 48px; font-weight: 600; line-height: 1.2; }
-        h4 { font-size: 40px; font-weight: 700; line-height: 1.2; }
-        
-        .body-24 { font-size: 24px; line-height: 1.5; }
-        .body-18 { font-size: 18px; line-height: 1.6; }
-        .body-16 { font-size: 16px; line-height: 1.6; }
-        .body-14 { font-size: 14px; line-height: 1.5; }
+<!-- Inter typeface -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-        /* Mobile Typography Adjustments */
-        @media (max-width: 768px) {
-            h1 { font-size: 48px; }
-            h2 { font-size: 40px; }
-            h3 { font-size: 32px; }
-            h4 { font-size: 28px; }
-        }
-
-        /* Glassmorphism */
-        .glass-nav {
-            background: rgba(254, 254, 254, 0.7);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border-bottom: 1px solid rgba(225, 226, 229, 0.5);
-        }
-        
-        .glass-card {
-            background: rgba(255, 255, 255, 0.6);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid #E1E2E5;
-            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        
-        .glass-card:hover {
-            transform: translateY(-8px) scale(1.02);
-            box-shadow: 0 20px 40px -10px rgba(33, 94, 253, 0.15);
-            border-color: rgba(33, 94, 253, 0.3);
-        }
-
-        /* Gradients & Accents */
-        .text-gradient {
-            background: linear-gradient(135deg, var(--primary), #8CA8FE);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .bg-gradient-custom {
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-        }
-
-        /* Abstract Floating Blob */
-        .blob {
-            position: absolute;
-            background: radial-gradient(circle, rgba(223,230,254,1) 0%, rgba(254,254,254,0) 70%);
-            width: 800px;
-            height: 800px;
-            border-radius: 50%;
-            top: -200px;
-            right: -200px;
-            z-index: -1;
-            filter: blur(60px);
-            animation: float 10s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0% { transform: translateY(0px) translateX(0px); }
-            50% { transform: translateY(30px) translateX(-30px); }
-            100% { transform: translateY(0px) translateX(0px); }
-        }
-
-        /* Framer Motion Style Animations */
-        .animate-on-scroll {
-            opacity: 0;
-            transform: translateY(40px);
-            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        
-        .animate-on-scroll.is-visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Delay utilities */
-        .delay-100 { transition-delay: 0.1s; }
-        .delay-200 { transition-delay: 0.2s; }
-        .delay-300 { transition-delay: 0.3s; }
-
-        /* Buttons */
-        .btn-primary {
-            background: var(--primary);
-            color: #fff;
-            transition: all 0.6s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        .btn-primary:hover {
-            box-shadow: 0 0 20px rgba(33, 94, 253, 0.4);
-            transform: translateY(-2px);
-        }
-        
-        .btn-secondary {
-            background: #fff;
-            color: var(--textcolor);
-            border: 1px solid var(--secondary);
-            transition: all 0.6s ease;
-        }
-        .btn-secondary:hover {
-            border-color: var(--primary);
-            color: var(--primary);
-            transform: translateY(-2px);
-        }
-
-        /* Image hover effects */
-        .img-container { overflow: hidden; border-radius: 20px; }
-        .img-container img { transition: transform 0.8s ease; }
-        .img-container:hover img { transform: scale(1.05); }
-    </style>
+<link rel="stylesheet" href="css/style.css">
 </head>
-<body class="antialiased selection:bg-accent selection:text-primary">
+<body>
 
-    <!-- Navigation -->
-    <nav class="fixed top-0 left-0 right-0 z-50 glass-nav px-8 py-5">
-        <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <!-- Logo -->
-            <a href="#" class="flex items-center gap-2 transition-transform hover:scale-105">
-                <img src="logo.png" alt="Bashana Mihindupriya Logo" class="h-10 w-auto" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                <span class="body-18 font-semibold hidden">Bashana M.</span>
+<!-- ============ NAV ============ -->
+<header class="nav-wrapper" id="nav-wrapper">
+  <nav class="nav container">
+    <a href="#home" class="logo" aria-label="Bashana Mihindupriya — Home">
+      <!-- PLACEHOLDER LOGO — replace assets/logo.svg with the uploaded PNG logo -->
+      <span class="logo-mark">
+        <svg viewBox="0 0 40 40" width="40" height="40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="40" height="40" rx="12" fill="url(#logoGrad)"/>
+          <path d="M13 27V13.5H19.6C22.2 13.5 23.9 14.9 23.9 17.1C23.9 18.7 23 19.8 21.6 20.2C23.3 20.6 24.4 21.8 24.4 23.5C24.4 25.9 22.6 27 19.9 27H13ZM16 19.1H19.1C20.3 19.1 21 18.5 21 17.5C21 16.5 20.3 15.9 19.1 15.9H16V19.1ZM16 24.6H19.4C20.7 24.6 21.4 24 21.4 22.9C21.4 21.8 20.7 21.3 19.4 21.3H16V24.6Z" fill="white"/>
+          <defs>
+            <linearGradient id="logoGrad" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#215EFD"/>
+              <stop offset="1" stop-color="#5C84FF"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </span>
+      <span class="logo-text">Bashana<span class="logo-text-light">Mihindupriya</span></span>
+    </a>
+
+    <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+
+    <div class="nav-collapse" id="nav-collapse">
+      <ul class="nav-menu">
+        <li><a href="#home" class="nav-link active" data-link>Home</a></li>
+        <li><a href="#about" class="nav-link" data-link>About</a></li>
+        <li><a href="#work" class="nav-link" data-link>My Work</a></li>
+        <li><a href="#contact" class="nav-link" data-link>Contact</a></li>
+      </ul>
+      <a href="#contact" class="btn btn-primary nav-cta" data-link>Let's Connect</a>
+    </div>
+  </nav>
+</header>
+
+<main>
+
+  <!-- ============ HERO ============ -->
+  <section id="home" class="hero">
+    <div class="hero-bg" aria-hidden="true">
+      <div class="blob blob-a"></div>
+      <div class="blob blob-b"></div>
+      <div class="grid-overlay"></div>
+    </div>
+
+    <div class="container hero-grid">
+      <div class="hero-content" data-animate="fade-up">
+        <p class="eyebrow">Portfolio · 2026</p>
+        <h1 class="h1">Creative Designer,<br>Developer &amp; Digital<br>Creator</h1>
+        <p class="body-xl hero-sub">I transform ideas into impactful digital experiences through design, branding, photography, web development, and creative storytelling.</p>
+        <div class="hero-actions">
+          <a href="#work" class="btn btn-primary btn-glow" data-link>
+            View My Work
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a href="#contact" class="btn btn-outline" data-link>Contact Me</a>
+        </div>
+      </div>
+
+      <div class="hero-visual" data-animate="fade-up" data-delay="180">
+        <div class="hero-shape" aria-hidden="true"></div>
+
+        <div class="glass-card float-card card-1">
+          <span class="card-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 3L4 7.5V16.5L12 21L20 16.5V7.5L12 3Z" stroke="#215EFD" stroke-width="1.6" stroke-linejoin="round"/><path d="M12 12L20 7.5M12 12V21M12 12L4 7.5" stroke="#215EFD" stroke-width="1.6" stroke-linejoin="round"/></svg>
+          </span>
+          <div>
+            <p class="card-title">Design</p>
+            <p class="card-sub">Brand &amp; Visual</p>
+          </div>
+        </div>
+
+        <div class="glass-card float-card card-2">
+          <span class="card-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M8 9L4 12L8 15" stroke="#215EFD" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 9L20 12L16 15" stroke="#215EFD" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M13.5 6L10.5 18" stroke="#215EFD" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </span>
+          <div>
+            <p class="card-title">Development</p>
+            <p class="card-sub">Web &amp; Product</p>
+          </div>
+        </div>
+
+        <div class="glass-card float-card card-3">
+          <span class="card-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 8.5C4 7.67 4.67 7 5.5 7H8L9.2 5.3C9.39 5.04 9.69 4.88 10 4.88H14C14.31 4.88 14.61 5.04 14.8 5.3L16 7H18.5C19.33 7 20 7.67 20 8.5V17.5C20 18.33 19.33 19 18.5 19H5.5C4.67 19 4 18.33 4 17.5V8.5Z" stroke="#215EFD" stroke-width="1.6" stroke-linejoin="round"/><circle cx="12" cy="13" r="3.2" stroke="#215EFD" stroke-width="1.6"/></svg>
+          </span>
+          <div>
+            <p class="card-title">Photography</p>
+            <p class="card-sub">Stories in Frame</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ABOUT ============ -->
+  <section id="about" class="about section">
+    <div class="container about-grid">
+      <div class="about-portrait" data-animate="slide-in-left">
+        <div class="portrait-frame">
+          <div class="portrait-placeholder">
+            <span>BM</span>
+            <p class="portrait-note">Portrait placeholder</p>
+          </div>
+          <div class="portrait-accent" aria-hidden="true"></div>
+        </div>
+      </div>
+
+      <div class="about-content" data-animate="slide-in-right">
+        <p class="eyebrow">About Me</p>
+        <h2 class="h2">About Me</h2>
+        <p class="body-lg about-text">Hi, I'm Bashana Mihindupriya. A passionate creative professional specializing in graphic design, photography, branding, web experiences, and digital media. I enjoy transforming concepts into visually engaging experiences that leave a lasting impression.</p>
+
+        <div class="highlight-grid">
+          <div class="highlight-card glass" data-animate="fade-up" data-delay="0">
+            <span class="hc-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 3L4 7.5V16.5L12 21L20 16.5V7.5L12 3Z" stroke="#215EFD" stroke-width="1.6" stroke-linejoin="round"/></svg></span>
+            <p class="hc-label">Graphic Design</p>
+          </div>
+          <div class="highlight-card glass" data-animate="fade-up" data-delay="80">
+            <span class="hc-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 8.5C4 7.67 4.67 7 5.5 7H8L9.2 5.3C9.39 5.04 9.69 4.88 10 4.88H14C14.31 4.88 14.61 5.04 14.8 5.3L16 7H18.5C19.33 7 20 7.67 20 8.5V17.5C20 18.33 19.33 19 18.5 19H5.5C4.67 19 4 18.33 4 17.5V8.5Z" stroke="#215EFD" stroke-width="1.6" stroke-linejoin="round"/><circle cx="12" cy="13" r="3.2" stroke="#215EFD" stroke-width="1.6"/></svg></span>
+            <p class="hc-label">Photography</p>
+          </div>
+          <div class="highlight-card glass" data-animate="fade-up" data-delay="160">
+            <span class="hc-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 12C4 7.58 7.58 4 12 4C16.42 4 20 7.58 20 12C20 16.42 16.42 20 12 20" stroke="#215EFD" stroke-width="1.6" stroke-linecap="round"/><path d="M8 12C8 9.79 9.79 8 12 8" stroke="#215EFD" stroke-width="1.6" stroke-linecap="round"/><circle cx="12" cy="12" r="1.6" fill="#215EFD"/></svg></span>
+            <p class="hc-label">Branding</p>
+          </div>
+          <div class="highlight-card glass" data-animate="fade-up" data-delay="240">
+            <span class="hc-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M8 9L4 12L8 15" stroke="#215EFD" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 9L20 12L16 15" stroke="#215EFD" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M13.5 6L10.5 18" stroke="#215EFD" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+            <p class="hc-label">Web Development</p>
+          </div>
+          <div class="highlight-card glass" data-animate="fade-up" data-delay="320">
+            <span class="hc-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M3 12L21 4L13 22L11 13L3 12Z" stroke="#215EFD" stroke-width="1.6" stroke-linejoin="round"/></svg></span>
+            <p class="hc-label">Creative Direction</p>
+          </div>
+          <div class="highlight-card glass" data-animate="fade-up" data-delay="400">
+            <span class="hc-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="4" y="4" width="16" height="16" rx="3" stroke="#215EFD" stroke-width="1.6"/><path d="M8 9H16M8 13H16M8 17H12" stroke="#215EFD" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+            <p class="hc-label">Content Creation</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ WORK ============ -->
+  <section id="work" class="work section">
+    <div class="container">
+      <div class="section-head" data-animate="fade-up">
+        <p class="eyebrow">Portfolio</p>
+        <h2 class="h2">Selected Works</h2>
+        <p class="body-lg section-sub">A collection of projects showcasing creativity, strategy, and visual excellence.</p>
+      </div>
+
+      <div class="work-grid">
+
+        <article class="work-card" data-animate="fade-up" data-delay="0">
+          <div class="work-media work-media-a">
+            <span class="work-tag">Branding</span>
+          </div>
+          <div class="work-body">
+            <h3 class="h4 work-title">Idemal Design — Identity System</h3>
+            <p class="body-md work-desc">A full brand identity build for a creative web agency — logo system, colour language, and a bento-style portfolio site to match.</p>
+            <a href="#work" class="work-link" data-link>View Project
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </a>
-            
-            <!-- Links -->
-            <div class="hidden md:flex items-center gap-8 body-16 text-gray-600">
-                <a href="#home" class="hover:text-primary transition-colors">Home</a>
-                <a href="#about" class="hover:text-primary transition-colors">About</a>
-                <a href="#work" class="hover:text-primary transition-colors">My Work</a>
-                <a href="#contact" class="hover:text-primary transition-colors">Contact</a>
-            </div>
+          </div>
+        </article>
 
-            <!-- CTA -->
-            <a href="#contact" class="btn-primary body-16 px-6 py-3 rounded-full font-semibold hidden md:block">Let's Connect</a>
+        <article class="work-card" data-animate="fade-up" data-delay="80">
+          <div class="work-media work-media-b">
+            <span class="work-tag">Web Design</span>
+          </div>
+          <div class="work-body">
+            <h3 class="h4 work-title">Prefects' Guild — Web Experience</h3>
+            <p class="body-md work-desc">A gothic-inspired school guild website with crimson and purple branding, an animated Top Board, and a live countdown to investiture.</p>
+            <a href="#work" class="work-link" data-link>View Project
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+          </div>
+        </article>
+
+        <article class="work-card" data-animate="fade-up" data-delay="160">
+          <div class="work-media work-media-c">
+            <span class="work-tag">Chess Event Promotions</span>
+          </div>
+          <div class="work-body">
+            <h3 class="h4 work-title">Checkmate Open — Event Promotions</h3>
+            <p class="body-md work-desc">Promotional visuals and social rollouts for a chess academy's flagship tournament — posters, countdowns, and player spotlights.</p>
+            <a href="#work" class="work-link" data-link>View Project
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+          </div>
+        </article>
+
+        <article class="work-card" data-animate="fade-up" data-delay="0">
+          <div class="work-media work-media-d">
+            <span class="work-tag">Photography</span>
+          </div>
+          <div class="work-body">
+            <h3 class="h4 work-title">Golden Hour — Photography Series</h3>
+            <p class="body-md work-desc">An editorial portrait and lifestyle collection exploring natural light, composition, and quiet storytelling.</p>
+            <a href="#work" class="work-link" data-link>View Project
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+          </div>
+        </article>
+
+        <article class="work-card" data-animate="fade-up" data-delay="80">
+          <div class="work-media work-media-e">
+            <span class="work-tag">Event Coverage</span>
+          </div>
+          <div class="work-body">
+            <h3 class="h4 work-title">Investiture Ceremony — Event Coverage</h3>
+            <p class="body-md work-desc">Full-day photo and video coverage of a school investiture ceremony, edited into a same-week highlight reel.</p>
+            <a href="#work" class="work-link" data-link>View Project
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+          </div>
+        </article>
+
+        <article class="work-card" data-animate="fade-up" data-delay="160">
+          <div class="work-media work-media-f">
+            <span class="work-tag">Social Media Design</span>
+          </div>
+          <div class="work-body">
+            <h3 class="h4 work-title">Campaign Visuals — Social Media Design</h3>
+            <p class="body-md work-desc">A cohesive grid of social templates and motion teasers built for consistent, recognisable posting across platforms.</p>
+            <a href="#work" class="work-link" data-link>View Project
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SKILLS ============ -->
+  <section class="skills section">
+    <div class="container">
+      <div class="section-head" data-animate="fade-up">
+        <p class="eyebrow">Capabilities</p>
+        <h2 class="h2">Skills &amp; Expertise</h2>
+        <p class="body-lg section-sub">Tools and disciplines I rely on to take a project from concept to finished product.</p>
+      </div>
+
+      <div class="skills-grid" id="skills-grid">
+        <!-- skill cards injected via data attributes, animated by script.js -->
+        <div class="skill-card" data-progress="92"><div class="skill-top"><p class="skill-name">Adobe Photoshop</p><p class="skill-pct">92%</p></div><div class="skill-bar"><div class="skill-fill"></div></div></div>
+        <div class="skill-card" data-progress="88"><div class="skill-top"><p class="skill-name">Adobe Illustrator</p><p class="skill-pct">88%</p></div><div class="skill-bar"><div class="skill-fill"></div></div></div>
+        <div class="skill-card" data-progress="85"><div class="skill-top"><p class="skill-name">Lightroom</p><p class="skill-pct">85%</p></div><div class="skill-bar"><div class="skill-fill"></div></div></div>
+        <div class="skill-card" data-progress="90"><div class="skill-top"><p class="skill-name">UI/UX Design</p><p class="skill-pct">90%</p></div><div class="skill-bar"><div class="skill-fill"></div></div></div>
+        <div class="skill-card" data-progress="93"><div class="skill-top"><p class="skill-name">Web Design</p><p class="skill-pct">93%</p></div><div class="skill-bar"><div class="skill-fill"></div></div></div>
+        <div class="skill-card" data-progress="95"><div class="skill-top"><p class="skill-name">HTML</p><p class="skill-pct">95%</p></div><div class="skill-bar"><div class="skill-fill"></div></div></div>
+        <div class="skill-card" data-progress="92"><div class="skill-top"><p class="skill-name">CSS</p><p class="skill-pct">92%</p></div><div class="skill-bar"><div class="skill-fill"></div></div></div>
+        <div class="skill-card" data-progress="87"><div class="skill-top"><p class="skill-name">JavaScript</p><p class="skill-pct">87%</p></div><div class="skill-bar"><div class="skill-fill"></div></div></div>
+        <div class="skill-card" data-progress="89"><div class="skill-top"><p class="skill-name">Branding</p><p class="skill-pct">89%</p></div><div class="skill-bar"><div class="skill-fill"></div></div></div>
+        <div class="skill-card" data-progress="91"><div class="skill-top"><p class="skill-name">Photography</p><p class="skill-pct">91%</p></div><div class="skill-bar"><div class="skill-fill"></div></div></div>
+        <div class="skill-card" data-progress="84"><div class="skill-top"><p class="skill-name">Content Strategy</p><p class="skill-pct">84%</p></div><div class="skill-bar"><div class="skill-fill"></div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CONTACT ============ -->
+  <section id="contact" class="contact section">
+    <div class="container contact-grid">
+
+      <div class="contact-form-wrap" data-animate="slide-in-left">
+        <p class="eyebrow">Get In Touch</p>
+        <h2 class="h2">Let's Work Together</h2>
+        <p class="body-lg">Interested in collaborating or discussing a project? Feel free to reach out.</p>
+
+        <form class="contact-form" id="contact-form" novalidate>
+          <div class="form-row">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" placeholder="Your full name" required>
+          </div>
+          <div class="form-row">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="you@email.com" required>
+          </div>
+          <div class="form-row">
+            <label for="subject">Subject</label>
+            <input type="text" id="subject" name="subject" placeholder="What's this about?" required>
+          </div>
+          <div class="form-row">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" rows="5" placeholder="Tell me a little about your project..." required></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-glow form-submit">
+            Send Message
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 14L14 8L2 2L4.5 8L2 14Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+          </button>
+          <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+
+      <div class="contact-info glass" data-animate="slide-in-right">
+        <div class="info-block">
+          <span class="info-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 6H20V18H4V6Z" stroke="#215EFD" stroke-width="1.6" stroke-linejoin="round"/><path d="M4 7L12 13L20 7" stroke="#215EFD" stroke-width="1.6" stroke-linejoin="round"/></svg>
+          </span>
+          <div>
+            <p class="info-label">Email</p>
+            <a class="info-value" href="mailto:Bashana2006@gmail.com">Bashana2006@gmail.com</a>
+          </div>
         </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <section id="home" class="relative min-h-screen flex items-center pt-24 pb-16 px-8 overflow-hidden">
-        <div class="blob"></div>
-        <div class="max-w-7xl mx-auto w-full grid md:grid-cols-2 gap-12 items-center">
-            <div class="z-10 pr-0 md:pr-10">
-                <h1 class="animate-on-scroll text-textcolor mb-6">
-                    Creative Designer, Developer <br>& <span class="text-gradient">Digital Creator</span>
-                </h1>
-                <p class="body-18 text-gray-600 mb-10 animate-on-scroll delay-100 max-w-lg">
-                    I transform ideas into impactful digital experiences through design, branding, photography, web development, and creative storytelling.
-                </p>
-                <div class="flex flex-wrap gap-4 animate-on-scroll delay-200">
-                    <a href="#work" class="btn-primary body-16 px-8 py-4 rounded-full font-semibold">View My Work</a>
-                    <a href="#contact" class="btn-secondary body-16 px-8 py-4 rounded-full font-semibold">Contact Me</a>
-                </div>
-            </div>
-            
-            <!-- Hero Visual (Glass Cards Simulation) -->
-            <div class="relative h-[500px] w-full hidden md:block animate-on-scroll delay-300">
-                <div class="absolute top-10 right-10 w-64 h-80 glass-card rounded-premium shadow-soft z-20 flex flex-col justify-end p-6">
-                    <div class="w-10 h-10 rounded-full bg-accent mb-4"></div>
-                    <div class="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
-                    <div class="h-4 bg-gray-100 rounded w-1/2"></div>
-                </div>
-                <div class="absolute bottom-10 left-10 w-72 h-64 glass-card rounded-premium shadow-soft z-10 flex items-center justify-center">
-                    <div class="text-center">
-                        <div class="text-gradient text-4xl font-bold mb-2">100%</div>
-                        <div class="body-14 text-gray-500">Creative Excellence</div>
-                    </div>
-                </div>
-            </div>
+        <div class="info-block">
+          <span class="info-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M6.5 4H9.5L11 8L8.5 9.5C9.4 11.6 11.4 13.6 13.5 14.5L15 12L19 13.5V16.5C19 17.6 18.1 18.5 17 18.5C10.6 18.5 5.5 13.4 5.5 7C5.5 5.9 6.4 4 6.5 4Z" stroke="#215EFD" stroke-width="1.6" stroke-linejoin="round"/></svg>
+          </span>
+          <div>
+            <p class="info-label">Phone</p>
+            <a class="info-value" href="tel:+94775648363">+94 77 564 8363</a>
+          </div>
         </div>
-    </section>
 
-    <!-- About Section -->
-    <section id="about" class="py-32 px-8 bg-white relative">
-        <div class="max-w-7xl mx-auto">
-            <div class="grid md:grid-cols-2 gap-16 items-center">
-                
-                <!-- Left: Portrait Placeholder -->
-                <div class="relative w-full aspect-[4/5] bg-secondary rounded-premium overflow-hidden animate-on-scroll shadow-soft">
-                    <!-- Replace with actual portrait image -->
-                    <div class="absolute inset-0 bg-gradient-to-tr from-accent to-white opacity-50"></div>
-                    <div class="absolute inset-0 flex items-center justify-center text-gray-400 body-18">Professional Portrait</div>
-                </div>
+        <div class="info-divider"></div>
 
-                <!-- Right: Text & Highlights -->
-                <div class="animate-on-scroll delay-100">
-                    <h2 class="mb-6">About Me</h2>
-                    <p class="body-18 text-gray-600 mb-12">
-                        Hi, I'm Bashana Mihindupriya. A passionate creative professional specializing in graphic design, photography, branding, web experiences, and digital media. I enjoy transforming concepts into visually engaging experiences that leave a lasting impression.
-                    </p>
-
-                    <!-- Highlight Cards -->
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="glass-card p-4 rounded-xl text-center body-16 font-semibold text-gray-800">Graphic Design</div>
-                        <div class="glass-card p-4 rounded-xl text-center body-16 font-semibold text-gray-800">Photography</div>
-                        <div class="glass-card p-4 rounded-xl text-center body-16 font-semibold text-gray-800">Branding</div>
-                        <div class="glass-card p-4 rounded-xl text-center body-16 font-semibold text-gray-800">Web Development</div>
-                        <div class="glass-card p-4 rounded-xl text-center body-16 font-semibold text-gray-800">Creative Direction</div>
-                        <div class="glass-card p-4 rounded-xl text-center body-16 font-semibold text-gray-800">Content Creation</div>
-                    </div>
-                </div>
-            </div>
+        <p class="info-label">Find me online</p>
+        <div class="social-row">
+          <a class="social-icon" href="https://www.instagram.com/jackbauer.us/" target="_blank" rel="noopener" aria-label="Instagram">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="3.5" y="3.5" width="17" height="17" rx="5" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="3.6" stroke="currentColor" stroke-width="1.6"/><circle cx="17.2" cy="6.8" r="1" fill="currentColor"/></svg>
+          </a>
+          <a class="social-icon" href="https://www.linkedin.com/in/bashana2006/" target="_blank" rel="noopener" aria-label="LinkedIn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="3.5" y="3.5" width="17" height="17" rx="3" stroke="currentColor" stroke-width="1.6"/><path d="M7.7 10.2V16.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="7.7" cy="7.4" r="1.05" fill="currentColor"/><path d="M11.4 16.5V12.7C11.4 11.4 12.1 10.4 13.4 10.4C14.6 10.4 15.2 11.3 15.2 12.7V16.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a class="social-icon" href="https://www.behance.net/Bashi2006" target="_blank" rel="noopener" aria-label="Behance">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M3.5 7H8.2C9.6 7 10.4 7.8 10.4 8.9C10.4 9.9 9.7 10.6 8.7 10.7C9.9 10.8 10.7 11.6 10.7 12.7C10.7 13.9 9.8 14.7 8.3 14.7H3.5V7Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M13.2 11.6C13.2 9.9 14.4 8.6 16.2 8.6C18 8.6 19.1 9.9 19.1 11.7V12.2H13.3" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M13.3 12.6C13.4 13.9 14.4 14.8 16 14.8C17.1 14.8 17.9 14.3 18.3 13.6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M14.3 6.6H18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </a>
+          <a class="social-icon" href="https://wa.me/94775648363" target="_blank" rel="noopener" aria-label="WhatsApp">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M6.3 17.6L4.5 19.5L5 16.4C4.1 15.1 3.6 13.6 3.6 12C3.6 7.6 7.2 4 11.6 4C16 4 19.6 7.6 19.6 12C19.6 16.4 16 20 11.6 20C9.9 20 8.3 19.5 7 18.6" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M9 11C9 13 11 15 13 15C13.3 15 13.8 14.4 14 14C14.2 13.6 14 13.4 13.7 13.2C13.4 13 12.8 12.6 12.5 12.5C12.2 12.4 12 12.5 11.8 12.7C11.6 12.9 11.4 13.2 11.2 13.2C11 13.2 10.4 12.9 9.8 12.3C9.2 11.7 9 11.2 9 11C9 10.8 9.3 10.5 9.5 10.3C9.7 10.1 9.7 9.9 9.6 9.6C9.5 9.3 9.1 8.7 8.9 8.4C8.7 8.1 8.5 8 8.2 8C8 8 7.4 8.2 7 8.6C6.7 8.9 6.4 9.5 6.4 10.1C6.4 10.4 6.5 10.7 6.6 11" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
         </div>
-    </section>
+      </div>
 
-    <!-- My Work Section -->
-    <section id="work" class="py-32 px-8 bg-[#F9FAFB]">
-        <div class="max-w-7xl mx-auto">
-            <div class="text-center mb-16 animate-on-scroll">
-                <h2>Selected Works</h2>
-                <p class="body-18 text-gray-500 mt-4 max-w-2xl mx-auto">A collection of projects showcasing creativity, strategy, and visual excellence.</p>
-            </div>
+    </div>
+  </section>
 
-            <!-- Modern Grid -->
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                
-                <!-- Project Card 1 -->
-                <div class="glass-card rounded-premium overflow-hidden animate-on-scroll flex flex-col group">
-                    <div class="img-container h-64 bg-gray-200 relative">
-                        <div class="absolute inset-0 flex items-center justify-center text-gray-400">Image Preview</div>
-                    </div>
-                    <div class="p-6 flex-grow flex flex-col">
-                        <span class="text-primary body-14 font-semibold tracking-wide uppercase mb-2">Branding</span>
-                        <h4 class="text-2xl font-bold mb-2">Corporate Identity</h4>
-                        <p class="body-14 text-gray-600 mb-6 flex-grow">Complete brand overhaul including logo design, color typography systems, and brand guidelines.</p>
-                        <a href="#" class="text-primary font-semibold hover:underline flex items-center gap-2">View Project <span class="text-xl">&rarr;</span></a>
-                    </div>
-                </div>
+</main>
 
-                <!-- Project Card 2 -->
-                <div class="glass-card rounded-premium overflow-hidden animate-on-scroll delay-100 flex flex-col group">
-                    <div class="img-container h-64 bg-gray-200 relative">
-                        <div class="absolute inset-0 flex items-center justify-center text-gray-400">Image Preview</div>
-                    </div>
-                    <div class="p-6 flex-grow flex flex-col">
-                        <span class="text-primary body-14 font-semibold tracking-wide uppercase mb-2">Web Design</span>
-                        <h4 class="text-2xl font-bold mb-2">SaaS Landing Page</h4>
-                        <p class="body-14 text-gray-600 mb-6 flex-grow">A modern, conversion-optimized landing page featuring glassmorphism and subtle animations.</p>
-                        <a href="#" class="text-primary font-semibold hover:underline flex items-center gap-2">View Project <span class="text-xl">&rarr;</span></a>
-                    </div>
-                </div>
+<!-- ============ FOOTER ============ -->
+<footer class="footer">
+  <div class="container footer-inner">
+    <a href="#home" class="footer-logo" data-link>
+      <svg viewBox="0 0 40 40" width="32" height="32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="40" height="40" rx="12" fill="url(#footerGrad)"/>
+        <path d="M13 27V13.5H19.6C22.2 13.5 23.9 14.9 23.9 17.1C23.9 18.7 23 19.8 21.6 20.2C23.3 20.6 24.4 21.8 24.4 23.5C24.4 25.9 22.6 27 19.9 27H13ZM16 19.1H19.1C20.3 19.1 21 18.5 21 17.5C21 16.5 20.3 15.9 19.1 15.9H16V19.1ZM16 24.6H19.4C20.7 24.6 21.4 24 21.4 22.9C21.4 21.8 20.7 21.3 19.4 21.3H16V24.6Z" fill="white"/>
+        <defs><linearGradient id="footerGrad" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse"><stop stop-color="#215EFD"/><stop offset="1" stop-color="#5C84FF"/></linearGradient></defs>
+      </svg>
+      <span>Bashana Mihindupriya</span>
+    </a>
+    <p class="footer-copy">© 2026 Bashana Mihindupriya. All Rights Reserved.</p>
+    <div class="social-row footer-socials">
+      <a class="social-icon" href="https://www.instagram.com/jackbauer.us/" target="_blank" rel="noopener" aria-label="Instagram">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="3.5" y="3.5" width="17" height="17" rx="5" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="3.6" stroke="currentColor" stroke-width="1.6"/><circle cx="17.2" cy="6.8" r="1" fill="currentColor"/></svg>
+      </a>
+      <a class="social-icon" href="https://www.linkedin.com/in/bashana2006/" target="_blank" rel="noopener" aria-label="LinkedIn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="3.5" y="3.5" width="17" height="17" rx="3" stroke="currentColor" stroke-width="1.6"/><path d="M7.7 10.2V16.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="7.7" cy="7.4" r="1.05" fill="currentColor"/><path d="M11.4 16.5V12.7C11.4 11.4 12.1 10.4 13.4 10.4C14.6 10.4 15.2 11.3 15.2 12.7V16.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <a class="social-icon" href="https://www.behance.net/Bashi2006" target="_blank" rel="noopener" aria-label="Behance">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M3.5 7H8.2C9.6 7 10.4 7.8 10.4 8.9C10.4 9.9 9.7 10.6 8.7 10.7C9.9 10.8 10.7 11.6 10.7 12.7C10.7 13.9 9.8 14.7 8.3 14.7H3.5V7Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M13.2 11.6C13.2 9.9 14.4 8.6 16.2 8.6C18 8.6 19.1 9.9 19.1 11.7V12.2H13.3" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M13.3 12.6C13.4 13.9 14.4 14.8 16 14.8C17.1 14.8 17.9 14.3 18.3 13.6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M14.3 6.6H18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </a>
+      <a class="social-icon" href="https://wa.me/94775648363" target="_blank" rel="noopener" aria-label="WhatsApp">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6.3 17.6L4.5 19.5L5 16.4C4.1 15.1 3.6 13.6 3.6 12C3.6 7.6 7.2 4 11.6 4C16 4 19.6 7.6 19.6 12C19.6 16.4 16 20 11.6 20C9.9 20 8.3 19.5 7 18.6" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+  </div>
+</footer>
 
-                <!-- Project Card 3 -->
-                <div class="glass-card rounded-premium overflow-hidden animate-on-scroll delay-200 flex flex-col group">
-                    <div class="img-container h-64 bg-gray-200 relative">
-                        <div class="absolute inset-0 flex items-center justify-center text-gray-400">Image Preview</div>
-                    </div>
-                    <div class="p-6 flex-grow flex flex-col">
-                        <span class="text-primary body-14 font-semibold tracking-wide uppercase mb-2">Photography</span>
-                        <h4 class="text-2xl font-bold mb-2">Chess Event Coverage</h4>
-                        <p class="body-14 text-gray-600 mb-6 flex-grow">Dynamic event photography and promotional materials for international chess tournaments.</p>
-                        <a href="#" class="text-primary font-semibold hover:underline flex items-center gap-2">View Project <span class="text-xl">&rarr;</span></a>
-                    </div>
-                </div>
-                
-                <!-- Project Card 4 -->
-                <div class="glass-card rounded-premium overflow-hidden animate-on-scroll flex flex-col group">
-                    <div class="img-container h-64 bg-gray-200 relative">
-                        <div class="absolute inset-0 flex items-center justify-center text-gray-400">Image Preview</div>
-                    </div>
-                    <div class="p-6 flex-grow flex flex-col">
-                        <span class="text-primary body-14 font-semibold tracking-wide uppercase mb-2">Social Media Design</span>
-                        <h4 class="text-2xl font-bold mb-2">Digital Campaigns</h4>
-                        <p class="body-14 text-gray-600 mb-6 flex-grow">Engaging visual assets designed for high conversion across Instagram and LinkedIn platforms.</p>
-                        <a href="#" class="text-primary font-semibold hover:underline flex items-center gap-2">View Project <span class="text-xl">&rarr;</span></a>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <!-- Skills Section -->
-    <section class="py-32 px-8 bg-white">
-        <div class="max-w-7xl mx-auto">
-            <h2 class="mb-12 text-center animate-on-scroll">Skills & Expertise</h2>
-            
-            <div class="flex flex-wrap justify-center gap-4 max-w-4xl mx-auto animate-on-scroll delay-100">
-                <!-- Skill Pills -->
-                <div class="px-6 py-3 glass-card rounded-full body-16 font-semibold">Adobe Photoshop</div>
-                <div class="px-6 py-3 glass-card rounded-full body-16 font-semibold">Adobe Illustrator</div>
-                <div class="px-6 py-3 glass-card rounded-full body-16 font-semibold">Lightroom</div>
-                <div class="px-6 py-3 glass-card rounded-full body-16 font-semibold">UI/UX Design</div>
-                <div class="px-6 py-3 glass-card rounded-full body-16 font-semibold">Web Design</div>
-                <div class="px-6 py-3 glass-card rounded-full body-16 font-semibold">HTML & CSS</div>
-                <div class="px-6 py-3 glass-card rounded-full body-16 font-semibold">JavaScript</div>
-                <div class="px-6 py-3 glass-card rounded-full body-16 font-semibold">Branding</div>
-                <div class="px-6 py-3 glass-card rounded-full body-16 font-semibold">Photography</div>
-                <div class="px-6 py-3 glass-card rounded-full body-16 font-semibold">Content Strategy</div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact" class="py-32 px-8 relative overflow-hidden bg-[#F9FAFB]">
-        <!-- Background Gradient Divider Effect -->
-        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-custom"></div>
-        
-        <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-16 items-center">
-            
-            <!-- Left: Contact Details -->
-            <div class="animate-on-scroll">
-                <h2 class="mb-6">Let's Work Together</h2>
-                <p class="body-18 text-gray-600 mb-10">
-                    Interested in collaborating or discussing a project? Feel free to reach out.
-                </p>
-                
-                <div class="space-y-6 mb-12">
-                    <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 rounded-full bg-accent flex items-center justify-center text-primary">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-                        </div>
-                        <div>
-                            <p class="body-14 text-gray-500">Email</p>
-                            <a href="mailto:Bashana2006@gmail.com" class="body-18 font-semibold hover:text-primary transition-colors">Bashana2006@gmail.com</a>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 rounded-full bg-accent flex items-center justify-center text-primary">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
-                        </div>
-                        <div>
-                            <p class="body-14 text-gray-500">Phone & WhatsApp</p>
-                            <a href="tel:+94775648363" class="body-18 font-semibold hover:text-primary transition-colors">+94 77 564 8363</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Social Icons -->
-                <div class="flex gap-4">
-                    <a href="https://www.instagram.com/jackbauer.us/" target="_blank" class="w-12 h-12 rounded-full border border-gray-300 flex items-center justify-center hover:bg-primary hover:text-white hover:border-primary transition-all duration-300 transform hover:-translate-y-1">
-                        IG
-                    </a>
-                    <a href="https://www.linkedin.com/in/bashana2006/" target="_blank" class="w-12 h-12 rounded-full border border-gray-300 flex items-center justify-center hover:bg-primary hover:text-white hover:border-primary transition-all duration-300 transform hover:-translate-y-1">
-                        IN
-                    </a>
-                    <a href="https://www.behance.net/Bashi2006" target="_blank" class="w-12 h-12 rounded-full border border-gray-300 flex items-center justify-center hover:bg-primary hover:text-white hover:border-primary transition-all duration-300 transform hover:-translate-y-1">
-                        BE
-                    </a>
-                    <a href="https://wa.me/94775648363" target="_blank" class="w-12 h-12 rounded-full border border-gray-300 flex items-center justify-center hover:bg-primary hover:text-white hover:border-primary transition-all duration-300 transform hover:-translate-y-1">
-                        WA
-                    </a>
-                </div>
-            </div>
-
-            <!-- Right: Contact Form -->
-            <div class="glass-card p-8 rounded-premium animate-on-scroll delay-100 shadow-soft">
-                <form class="space-y-6">
-                    <div>
-                        <label class="block body-14 font-semibold text-gray-700 mb-2">Name</label>
-                        <input type="text" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-primary focus:ring-2 focus:ring-accent transition-all" placeholder="John Doe" required>
-                    </div>
-                    <div>
-                        <label class="block body-14 font-semibold text-gray-700 mb-2">Email</label>
-                        <input type="email" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-primary focus:ring-2 focus:ring-accent transition-all" placeholder="john@example.com" required>
-                    </div>
-                    <div>
-                        <label class="block body-14 font-semibold text-gray-700 mb-2">Subject</label>
-                        <input type="text" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-primary focus:ring-2 focus:ring-accent transition-all" placeholder="Project Inquiry" required>
-                    </div>
-                    <div>
-                        <label class="block body-14 font-semibold text-gray-700 mb-2">Message</label>
-                        <textarea rows="4" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-primary focus:ring-2 focus:ring-accent transition-all resize-none" placeholder="Tell me about your project..." required></textarea>
-                    </div>
-                    <button type="submit" class="btn-primary w-full py-4 rounded-xl font-semibold body-16">Send Message</button>
-                </form>
-            </div>
-
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="py-12 bg-white border-t border-gray-100 text-center flex flex-col items-center">
-        <img src="logo.png" alt="Bashana Mihindupriya Logo" class="h-12 w-auto mb-6 opacity-80" onerror="this.style.display='none';">
-        <p class="body-14 text-gray-500 mb-4">&copy; 2026 Bashana Mihindupriya. All Rights Reserved.</p>
-        <div class="flex gap-6 text-gray-400">
-            <a href="https://www.instagram.com/jackbauer.us/" class="hover:text-primary transition-colors">Instagram</a>
-            <a href="https://www.linkedin.com/in/bashana2006/" class="hover:text-primary transition-colors">LinkedIn</a>
-            <a href="https://www.behance.net/Bashi2006" class="hover:text-primary transition-colors">Behance</a>
-        </div>
-    </footer>
-
-    <!-- Intersection Observer Script for Framer Motion style Fade-Up -->
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const observerOptions = {
-                root: null,
-                rootMargin: '0px',
-                threshold: 0.15
-            };
-
-            const observer = new IntersectionObserver((entries, observer) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('is-visible');
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, observerOptions);
-
-            const animatedElements = document.querySelectorAll('.animate-on-scroll');
-            animatedElements.forEach(el => observer.observe(el));
-        });
-    </script>
+<script src="js/script.js"></script>
 </body>
 </html>
