@@ -168,6 +168,61 @@
         .img-container { overflow: hidden; border-radius: 20px; }
         .img-container img { transition: transform 0.8s ease; }
         .img-container:hover img { transform: scale(1.05); }
+
+        .section-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(33, 94, 253, 0.08);
+            color: var(--primary);
+            border-radius: 9999px;
+            padding: 0.6rem 1rem;
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+        }
+
+        .section-title {
+            font-size: 3rem;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            line-height: 1.05;
+            margin-top: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .section-description {
+            color: #6B7280;
+        }
+
+        .mobile-menu {
+            display: none;
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 100%;
+            z-index: 40;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(16px);
+            border-top: 1px solid rgba(226, 229, 235, 0.7);
+        }
+
+        .mobile-menu.open {
+            display: block;
+        }
+
+        .mobile-menu a {
+            display: block;
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid rgba(226, 229, 235, 0.85);
+            color: #334155;
+            font-weight: 600;
+        }
+
+        .hero-section-text {
+            max-width: 620px;
+        }
     </style>
 </head>
 <body class="antialiased selection:bg-accent selection:text-primary">
@@ -177,8 +232,8 @@
         <div class="max-w-7xl mx-auto flex justify-between items-center">
             <!-- Logo -->
             <a href="#" class="flex items-center gap-2 transition-transform hover:scale-105">
-                <img src="assets/logoblack.png" alt="Bashana Mihindupriya Logo" class="h-10 w-auto" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                <span class="body-18 font-semibold hidden"></span>
+                <img src="assets/logo.png" alt="Thisitha Bashana Mihindupriya Logo" class="h-10 w-auto" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                <span class="body-18 font-semibold hidden">Thisitha</span>
             </a>
             
             <!-- Links -->
@@ -189,21 +244,38 @@
                 <a href="#contact" class="hover:text-primary transition-colors">Contact</a>
             </div>
 
+            <button id="mobileMenuToggle" class="md:hidden inline-flex items-center justify-center p-3 rounded-full border border-gray-200 text-gray-600 hover:bg-gray-100">
+                <span class="sr-only">Open mobile menu</span>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+            </button>
+
             <!-- CTA -->
             <a href="#contact" class="btn-primary body-16 px-6 py-3 rounded-full font-semibold hidden md:block">Let's Connect</a>
+        </div>
+        <div id="mobileMenu" class="mobile-menu md:hidden">
+            <div class="max-w-7xl mx-auto px-6 py-4 space-y-2">
+                <a href="#home">Home</a>
+                <a href="#about">About</a>
+                <a href="#work">My Work</a>
+                <a href="#contact">Contact</a>
+                <a href="#contact" class="btn-primary w-full inline-flex items-center justify-center py-3 rounded-full font-semibold body-16">Let's Connect</a>
+            </div>
         </div>
     </nav>
 
     <!-- Hero Section -->
     <section id="home" class="relative min-h-screen flex items-center pt-24 pb-16 px-8 overflow-hidden">
-        <div class="blob"><img src="logoblack.png" alt="Bashana Mihindupriya Logo" class="h-10 w-auto" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"></div>
+        <div class="blob"><img src="assets/logoblack.png" alt="Bashana Mihindupriya Logo" class="h-10 w-auto" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"></div>
         <div class="max-w-7xl mx-auto w-full grid md:grid-cols-2 gap-12 items-center">
-            <div class="z-10 pr-0 md:pr-10">
+            <div class="z-10 pr-0 md:pr-10 hero-section-text">
                 <h1 class="animate-on-scroll text-textcolor mb-6">
-                    Creative Designer, Developer <br>& <span class="text-gradient">Digital Creator</span>
+                    Hi, I’m <span class="text-gradient">Thisitha Bashana Mihindupriya</span>
                 </h1>
+                <p class="body-24 font-semibold text-gray-900 mb-4 animate-on-scroll delay-100 max-w-lg">
+                    A multidisciplinary creative building brand stories, digital experiences, and visual content that connect with people.
+                </p>
                 <p class="body-18 text-gray-600 mb-10 animate-on-scroll delay-100 max-w-lg">
-                    I transform ideas into impactful digital experiences through design, branding, photography, web development, and creative storytelling.
+                    I blend design, photography, and web development to craft polished work that is memorable, modern, and meaningful.
                 </p>
                 <div class="flex flex-wrap gap-4 animate-on-scroll delay-200">
                     <a href="#work" class="btn-primary body-16 px-8 py-4 rounded-full font-semibold">View My Work</a>
@@ -213,11 +285,14 @@
             
             <!-- Hero Visual (Glass Cards Simulation) -->
             <div class="relative h-[500px] w-full hidden md:block animate-on-scroll delay-300">
-                <div class="absolute top-10 right-10 w-64 h-80 glass-card rounded-premium shadow-soft z-20 flex flex-col justify-end p-6">
-                    <img src="IMG_0334-Enhanced-NR copy.jpg" alt="Bashana Mihindupriya Logo" class="h-10 w-auto" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                    <div class="w-10 h-10 rounded-full bg-accent mb-4"></div>
-                    <div class="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
-                    <div class="h-4 bg-gray-100 rounded w-1/2"></div>
+                <div class="absolute top-10 right-10 w-64 h-80 glass-card rounded-premium shadow-soft z-20 overflow-hidden">
+                    <img src="assets/IMG_0334-Enhanced-NR.jpg" alt="Bashana Mihindupriya portrait" class="h-full w-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-b from-transparent to-white/80"></div>
+                    <div class="absolute bottom-6 left-6">
+                        <div class="w-12 h-12 rounded-full bg-accent mb-4"></div>
+                        <div class="h-3 bg-white/80 rounded w-24 mb-2"></div>
+                        <div class="h-3 bg-white/70 rounded w-16"></div>
+                    </div>
                 </div>
                 <div class="absolute bottom-10 left-10 w-72 h-64 glass-card rounded-premium shadow-soft z-10 flex items-center justify-center">
                     <div class="text-center">
@@ -236,16 +311,16 @@
                 
                 <!-- Left: Portrait Placeholder -->
                 <div class="relative w-full aspect-[4/5] bg-secondary rounded-premium overflow-hidden animate-on-scroll shadow-soft">
-                    <!-- Replace with actual portrait image -->
-                    <div class="absolute inset-0 bg-gradient-to-tr from-accent to-white opacity-50"></div>
-                    <div class="absolute inset-0 flex items-center justify-center text-gray-400 body-18">Professional Portrait</div>
+                    <img src="assets/IMG_0334-Enhanced-NR.jpg" alt="Portrait of Bashana Mihindupriya" class="absolute inset-0 h-full w-full object-cover" onerror="this.style.display='none';">
+                    <div class="absolute inset-0 bg-gradient-to-tr from-accent to-white opacity-30"></div>
                 </div>
 
                 <!-- Right: Text & Highlights -->
                 <div class="animate-on-scroll delay-100">
-                    <h2 class="mb-6">About Me</h2>
+                    <span class="section-label">About</span>
+                    <h2 class="section-title mb-6">About Me</h2>
                     <p class="body-18 text-gray-600 mb-12">
-                        Hi, I'm Bashana Mihindupriya. A passionate creative professional specializing in graphic design, photography, branding, web experiences, and digital media. I enjoy transforming concepts into visually engaging experiences that leave a lasting impression.
+                        Hi, I'm Thisitha Bashana Mihindupriya. A passionate creative professional specializing in graphic design, photography, branding, web experiences, and digital media. I enjoy transforming concepts into visually engaging experiences that leave a lasting impression.
                     </p>
 
                     <!-- Highlight Cards -->
@@ -276,7 +351,7 @@
                 <!-- Project Card 1 -->
                 <div class="glass-card rounded-premium overflow-hidden animate-on-scroll flex flex-col group">
                     <div class="img-container h-64 bg-gray-200 relative">
-                        <div class="absolute inset-0 flex items-center justify-center text-gray-400">Image Preview</div>
+                        <img src="assets/KSCA Datwah Numbers copy2.jpg" alt="Corporate Identity Project" class="absolute inset-0 h-full w-full object-cover">
                     </div>
                     <div class="p-6 flex-grow flex flex-col">
                         <span class="text-primary body-14 font-semibold tracking-wide uppercase mb-2">Branding</span>
@@ -289,7 +364,7 @@
                 <!-- Project Card 2 -->
                 <div class="glass-card rounded-premium overflow-hidden animate-on-scroll delay-100 flex flex-col group">
                     <div class="img-container h-64 bg-gray-200 relative">
-                        <div class="absolute inset-0 flex items-center justify-center text-gray-400">Image Preview</div>
+                        <img src="assets/New Year Post KSCA copy.jpg" alt="SaaS Landing Page Project" class="absolute inset-0 h-full w-full object-cover">
                     </div>
                     <div class="p-6 flex-grow flex flex-col">
                         <span class="text-primary body-14 font-semibold tracking-wide uppercase mb-2">Web Design</span>
@@ -302,7 +377,7 @@
                 <!-- Project Card 3 -->
                 <div class="glass-card rounded-premium overflow-hidden animate-on-scroll delay-200 flex flex-col group">
                     <div class="img-container h-64 bg-gray-200 relative">
-                        <div class="absolute inset-0 flex items-center justify-center text-gray-400">Image Preview</div>
+                        <img src="assets/5974 copy.JPG" alt="Photography Project" class="absolute inset-0 h-full w-full object-cover">
                     </div>
                     <div class="p-6 flex-grow flex flex-col">
                         <span class="text-primary body-14 font-semibold tracking-wide uppercase mb-2">Photography</span>
@@ -315,7 +390,7 @@
                 <!-- Project Card 4 -->
                 <div class="glass-card rounded-premium overflow-hidden animate-on-scroll flex flex-col group">
                     <div class="img-container h-64 bg-gray-200 relative">
-                        <div class="absolute inset-0 flex items-center justify-center text-gray-400">Image Preview</div>
+                        <img src="assets/Al 2 copy.jpg" alt="Digital Campaigns Project" class="absolute inset-0 h-full w-full object-cover">
                     </div>
                     <div class="p-6 flex-grow flex flex-col">
                         <span class="text-primary body-14 font-semibold tracking-wide uppercase mb-2">Social Media Design</span>
@@ -332,7 +407,10 @@
     <!-- Skills Section -->
     <section class="py-32 px-8 bg-white">
         <div class="max-w-7xl mx-auto">
-            <h2 class="mb-12 text-center animate-on-scroll">Skills & Expertise</h2>
+            <div class="text-center mb-12 animate-on-scroll">
+                <span class="section-label">Skills</span>
+                <h2 class="section-title">Skills & Expertise</h2>
+            </div>
             
             <div class="flex flex-wrap justify-center gap-4 max-w-4xl mx-auto animate-on-scroll delay-100">
                 <!-- Skill Pills -->
@@ -359,7 +437,8 @@
             
             <!-- Left: Contact Details -->
             <div class="animate-on-scroll">
-                <h2 class="mb-6">Let's Work Together</h2>
+                <span class="section-label">Contact</span>
+                <h2 class="section-title mb-6">Let's Work Together</h2>
                 <p class="body-18 text-gray-600 mb-10">
                     Interested in collaborating or discussing a project? Feel free to reach out.
                 </p>
